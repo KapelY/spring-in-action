@@ -1,13 +1,17 @@
 package com.study.service;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import static java.text.MessageFormat.format;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class DefaultEmailSender implements EmailSender {
-    private int port;
-    private int protocol;
+    private Integer port;
+    private String protocol;
 
     @Override
     public void sendEmail(String email, String message) {
