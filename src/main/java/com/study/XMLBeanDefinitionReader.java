@@ -1,7 +1,6 @@
 package com.study;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,9 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@AllArgsConstructor
-public class XMLBeanDefinitionReader implements BeanDefinitionReader {
-    private String path;
+@Slf4j
+public record XMLBeanDefinitionReader(String path) implements BeanDefinitionReader {
+    public static final String ID = "id";
+    public static final String CLASS = "class";
+    public static final String NAME = "name";
+    public static final String VALUE = "value";
+    public static final String REF = "ref";
 
     @Override
     public List<BeanDefinition> readBeanDefinitions() {
@@ -41,8 +44,8 @@ public class XMLBeanDefinitionReader implements BeanDefinitionReader {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    String id = element.getAttribute("id");
-                    String clazz = element.getAttribute("class");
+                    String id = element.getAttribute(ID);
+                    String clazz = element.getAttribute(CLASS);
 
                     beanDefinition = new BeanDefinition();
                     beanDefinition.setId(id);
@@ -57,9 +60,9 @@ public class XMLBeanDefinitionReader implements BeanDefinitionReader {
                         if (property.getNodeType() == Node.ELEMENT_NODE) {
                             Element elem = (Element) property;
 
-                            String name = elem.getAttribute("name");
-                            String value = elem.getAttribute("value");
-                            String ref = elem.getAttribute("ref");
+                            String name = elem.getAttribute(NAME);
+                            String value = elem.getAttribute(VALUE);
+                            String ref = elem.getAttribute(REF);
 
                             if (!value.isEmpty() && ref.isEmpty()) {
                                 valueDependencies.put(name, value);
@@ -77,7 +80,8 @@ public class XMLBeanDefinitionReader implements BeanDefinitionReader {
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
+            log.error("Error when parsing.", e);
+            throw new RuntimeException(e);
         }
         return beanDefinitions;
     }

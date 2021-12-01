@@ -2,6 +2,7 @@ package com.study.service;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import static java.text.MessageFormat.format;
@@ -9,6 +10,7 @@ import static java.text.MessageFormat.format;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Setter
 public class DefaultEmailSender implements EmailSender {
     private Integer port;
     private String protocol;
