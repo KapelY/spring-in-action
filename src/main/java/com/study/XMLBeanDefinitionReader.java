@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public record XMLBeanDefinitionReader(String path) implements BeanDefinitionReader {
+public class XMLBeanDefinitionReader implements BeanDefinitionReader {
     public static final String ID = "id";
     public static final String CLASS = "class";
     public static final String NAME = "name";
@@ -25,7 +25,7 @@ public record XMLBeanDefinitionReader(String path) implements BeanDefinitionRead
     public static final String REF = "ref";
 
     @Override
-    public List<BeanDefinition> readBeanDefinitions() {
+    public List<BeanDefinition> readBeanDefinitions(String path) {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;

@@ -1,14 +1,12 @@
 package com.study.service;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Setter
+@EqualsAndHashCode
 public class UserService {
     private String message;
     private EmailSender emailSender;

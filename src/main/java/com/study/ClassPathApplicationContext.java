@@ -15,13 +15,17 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ClassPathApplicationContext implements ApplicationContext {
-    @Setter
-    private BeanDefinitionReader beanDefinitionReader;
+    @Setter private BeanDefinitionReader beanDefinitionReader;
     private List<Bean> beans;
     private String[] paths;
 
     public ClassPathApplicationContext(String... paths) {
+        this(new XMLBeanDefinitionReader(), paths);
+    }
+
+    public ClassPathApplicationContext(BeanDefinitionReader beanDefinitionReader, String... paths) {
         this.paths = paths;
+        this.beanDefinitionReader = beanDefinitionReader;
         initializeContext();
     }
 
@@ -35,8 +39,7 @@ public class ClassPathApplicationContext implements ApplicationContext {
     private List<BeanDefinition> getBeanDefinitions() {
         List<BeanDefinition> beanDefinitions = new ArrayList<>();
         for (String path : paths) {
-            beanDefinitionReader = new XMLBeanDefinitionReader(path);
-            beanDefinitions.addAll(beanDefinitionReader.readBeanDefinitions());
+            beanDefinitions.addAll(beanDefinitionReader.readBeanDefinitions(path));
         }
         return beanDefinitions;
     }
@@ -227,18 +230,30 @@ public class ClassPathApplicationContext implements ApplicationContext {
 
     @Override
     public <T> T getBean(Class<T> clazz) {
+        T result = null;
+        int matchCounter = 0;
+
         for (Bean bean : beans) {
-            if (bean.getClass().equals(clazz)) {
-                return clazz.cast(bean.getValue());
+            if (bean.getValue().getClass() == clazz) {
+                log.info(bean.toString());
+                matchCounter++;
+                result = clazz.cast(bean.getValue());
             }
         }
-        return null;
+        if (matchCounter == 1) {
+            return result;
+        } else if (matchCounter == 0) {
+            return null;
+        }
+        log.error("There is more than one bean matches class");
+        throw new IllegalCallerException("There is more than one bean matches class");
     }
 
     @Override
     public <T> T getBean(String id, Class<T> clazz) {
+        log.info(beans.toString());
         for (Bean bean : beans) {
-            if (bean.getId().equals(id) && bean.getClass().equals(clazz)) {
+            if (bean.getId().equals(id) && bean.getValue().getClass().equals(clazz)) {
                 return clazz.cast(bean.getValue());
             }
         }

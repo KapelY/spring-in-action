@@ -13,8 +13,8 @@ class XMLBeanDefinitionReaderTest {
     @DisplayName("When read xml config correct size is returned")
     @Test
     void readBeanDefinitions1() {
-        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader("context.xml");
-        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions();
+        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader();
+        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions("context.xml");
 
         assertEquals(3, beanDefinitions.size());
     }
@@ -28,8 +28,8 @@ class XMLBeanDefinitionReaderTest {
         <property name="port" value="899" />
     </bean>
 */
-        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader("context.xml");
-        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions();
+        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader();
+        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions("context.xml");
 
         String expectedId = "popEmailSender";
         Optional<BeanDefinition> actualSender = beanDefinitions.stream()
@@ -49,8 +49,8 @@ class XMLBeanDefinitionReaderTest {
         <property name="port" value="899" />
     </bean>
 */
-        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader("context.xml");
-        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions();
+        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader();
+        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions("context.xml");
 
         String expectedProtocol = "POP3";
         Optional<BeanDefinition> actualSender = beanDefinitions.stream()
@@ -70,8 +70,8 @@ class XMLBeanDefinitionReaderTest {
         <property name="emailSender" ref="popEmailSender" />
     </bean>
 */
-        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader("context.xml");
-        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions();
+        BeanDefinitionReader beanDefinitionReader = new XMLBeanDefinitionReader();
+        List<BeanDefinition> beanDefinitions = beanDefinitionReader.readBeanDefinitions("context.xml");
 
         System.out.println(beanDefinitions);
         String expectedSender = "popEmailSender";
