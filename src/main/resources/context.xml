@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans>
+    <bean id="popEmailSender" class="com.study.service.DefaultEmailSender">
+        <property name="protocol" value="POP3" />
+        <property name="port" value="899" />
+    </bean>
+
+    <bean id="helloUserService" class="com.study.service.UserService">
+        <property name="message" value="Hello!" />
+        <property name="emailSender" ref="popEmailSender" />
+    </bean>
+
+    <bean id="byeUserService" class="com.study.service.UserService">
+        <property name="message" value="Bye!" />
+        <property name="emailSender" ref="popEmailSender" />
+    </bean>
+</beans>
