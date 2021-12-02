@@ -235,7 +235,6 @@ public class ClassPathApplicationContext implements ApplicationContext {
 
         for (Bean bean : beans) {
             if (bean.getValue().getClass() == clazz) {
-                log.info(bean.toString());
                 matchCounter++;
                 result = clazz.cast(bean.getValue());
             }
@@ -251,7 +250,6 @@ public class ClassPathApplicationContext implements ApplicationContext {
 
     @Override
     public <T> T getBean(String id, Class<T> clazz) {
-        log.info(beans.toString());
         for (Bean bean : beans) {
             if (bean.getId().equals(id) && bean.getValue().getClass().equals(clazz)) {
                 return clazz.cast(bean.getValue());
