@@ -83,7 +83,6 @@ public class ClassPathApplicationContext implements ApplicationContext {
             beanValueField.setAccessible(true);
             Object storedObject = beanValueField.get(bean);
             Field declaredField = storedObject.getClass().getDeclaredField(fieldName);
-            declaredField.setAccessible(true);
 
             for (Method method : storedObject.getClass().getMethods()) {
                 if (method.getName().startsWith("set")
@@ -109,7 +108,8 @@ public class ClassPathApplicationContext implements ApplicationContext {
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
-            log.warn("No setters or any other problem when setting the value, the field {} wasn't set", fieldName, e);
+            log.error("No setters or any other problem when setting the value, the field {} wasn't set", fieldName, e);
+            throw new RuntimeException(e);
         }
     }
 
